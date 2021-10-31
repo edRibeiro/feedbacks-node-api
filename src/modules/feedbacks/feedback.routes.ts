@@ -1,9 +1,11 @@
 import * as express from 'express';
+import { createFeedback, getAllFeedbacks, getFeedback, updateFeedback } from './feedback.controller';
 
 const router = express.Router();
 
-router.all('/', (req, res) => {
-  return res.status(200).json({ msg: 'Services feedbacks are up!' });
-});
+router.get('/', getAllFeedbacks);
+router.post('/', createFeedback);
+router.get('/:id', getFeedback);
+router.patch('/:id', updateFeedback);
 
 export default router;

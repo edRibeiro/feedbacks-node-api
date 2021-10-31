@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Schema, Document, Model, model } from 'mongoose';
 import { IUser } from '../users/user.model';
 
 export interface IFeedback extends Document {
@@ -29,4 +29,4 @@ FeedbackSchema.pre("save", function(next) {
   next();
 });
 
-export default mongoose.model<IFeedback>('Feedback', FeedbackSchema);
+export const FeedbackModel: Model<IFeedback> =  model<IFeedback>('Feedback', FeedbackSchema);

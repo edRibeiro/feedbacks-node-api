@@ -1,4 +1,5 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import bcrypt from 'bcrypt';
+import { Schema, Document, Model, model } from 'mongoose';
 
 export interface IUser extends Document {
   createdAt: Date,
@@ -14,12 +15,16 @@ export var UserSchema: Schema = new Schema({
 });
 
 UserSchema.pre("save", function(next) {
-  let now = new Date();
   if (!this.createdAt) {
+    let now = new Date();
     this.createdAt = now;
+  }
+  if (this.isModified('password')) {
+    const salt = bcrypt.genSaltSync();
+    this.password = bcrypt.hashSync(this.password, salt);
   }
   next();
 });
 
 // Export the model and return your IUser interface
-export default mongoose.model<IUser>('User', UserSchema);
+export const UserModel: Model<IUser> =  model<IUser>('User', UserSchema);
