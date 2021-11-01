@@ -4,8 +4,8 @@ import { createFeedback, getAllFeedbacks, getFeedback, updateFeedback } from './
 const router = express.Router();
 
 router.get('/', getAllFeedbacks);
-router.post('/', createFeedback);
 router.get('/:id', getFeedback);
+router.post('/', createFeedback);
 router.patch('/:id', updateFeedback);
 
 export default router;

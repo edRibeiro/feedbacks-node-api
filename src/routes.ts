@@ -1,7 +1,7 @@
 import * as express from 'express';
 import feedbackRoutes from './modules/feedbacks/feedback.routes';
 import userRoutes from './modules/users/user.routes';
-import authRoutes from './modules/users/user.routes';
+import authRoutes from './modules/auth/auth.routes';
 
 const router = express.Router();
 
