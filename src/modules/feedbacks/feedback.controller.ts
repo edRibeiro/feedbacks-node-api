@@ -51,7 +51,7 @@ const updateFeedback = async (req: Request, res: Response) => {
 
 const getAllFeedbacks = async (req: Request, res: Response) => {
   try {
-    const updateFeedbacks = await FeedbackModel.find();
+    const updateFeedbacks = await FeedbackModel.find({ $or: [{ owner: req.user.id }, { user: req.user.id }] });
     return res.status(201).json({ data: updateFeedbacks });
   } catch (error) {
     return res.status(422).json({ error });
