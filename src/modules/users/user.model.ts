@@ -1,9 +1,9 @@
-import bcrypt from 'bcrypt';
-import { Schema, Document, Model, model } from 'mongoose';
-import { ObjectId } from 'mongodb';
+import bcrypt from "bcrypt";
+import { Schema, Document, Model, model } from "mongoose";
+import { ObjectId } from "mongodb";
 
 export interface IUser extends Document {
-  createdAt: Date,
+  createdAt: Date;
   email: string;
   name: string;
   password: string;
@@ -12,7 +12,7 @@ export interface IUser extends Document {
 export var UserSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true },
   name: { type: String, required: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true, select: false },
 });
 
 UserSchema.pre("save", function (next) {
@@ -20,7 +20,7 @@ UserSchema.pre("save", function (next) {
     let now = new Date();
     this.createdAt = now;
   }
-  if (this.isModified('password')) {
+  if (this.isModified("password")) {
     const salt = bcrypt.genSaltSync();
     this.password = bcrypt.hashSync(this.password, salt);
   }
@@ -28,4 +28,4 @@ UserSchema.pre("save", function (next) {
 });
 
 // Export the model and return your IUser interface
-export const UserModel: Model<IUser> = model<IUser>('User', UserSchema);
+export const UserModel: Model<IUser> = model<IUser>("User", UserSchema);

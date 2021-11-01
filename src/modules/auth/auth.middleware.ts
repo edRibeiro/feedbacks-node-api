@@ -6,7 +6,7 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const bearerToken = req.headers.authorization!;
     if (!bearerToken) {
-      res.status(403).json({ success: false, message: "UnAuthorized" });
+      res.status(401).json({ success: false, message: "UnAuthorized" });
     }
     const token = bearerToken.split(" ")[2];
     const decoded: any = await JWT.validateToken(token);
@@ -14,7 +14,7 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     req.user = user;
     next();
   } catch (error) {
-    res.status(403).json({ success: false, message: "UnAuthorized" });
+    res.status(401).json({ success: false, message: "UnAuthorized" });
   }
 
 }
