@@ -5,7 +5,7 @@ import { ObjectID } from 'mongodb';
 
 const createFeedback = async (req: Request, res: Response) => {
   console.log(req.body);
-  const { finalfeedback, improvementpoints, maintainpoints, suggestions, user, owner } = req.body;
+  const { finalfeedback, improvementpoints, maintainpoints, suggestions, user } = req.body;
 
   try {
     console.log("Antes de criar Feedback");
@@ -16,9 +16,9 @@ const createFeedback = async (req: Request, res: Response) => {
       maintainpoints,
       suggestions,
       user,
-      owner
+      owner: req.user.id
     });
-    console.log("Antes de criar Feedback");
+    console.log("Depois de criar Feedback");
 
     return res.status(201).json({ data: feedback });
   } catch (error) {
