@@ -1,7 +1,7 @@
-import 'dotenv/config';
-import setupApp from './src/app';
+import "dotenv/config";
+import setupApp from "./src/app";
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 setupApp()
   .then((app) => {
