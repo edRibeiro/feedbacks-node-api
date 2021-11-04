@@ -1,27 +1,27 @@
-import { Schema, Document, Model, model } from 'mongoose';
-import { IUser } from '../users/user.model';
+import { Schema, Document, Model, model } from "mongoose";
+import { IUser } from "../users/user.model";
 
 export interface IFeedback extends Document {
-  createdAt: Date,
+  createdAt: Date;
   finalfeedback: string;
   improvementpoints: string;
   maintainpoints: string;
-  owner: IUser['_id'];
+  owner: IUser["_id"];
   suggestions: string;
-  user: IUser['_id'];
-
+  user: IUser["_id"];
 }
 
-export var  FeedbackSchema: Schema = new Schema({
-  owner: { type: Schema.Types.ObjectId, required: true },
-  user: { type: Schema.Types.ObjectId, required: true },
+export var FeedbackSchema: Schema = new Schema({
+  owner: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+  user: { type: Schema.Types.ObjectId, required: true, ref: "User" },
   finalfeedback: { type: String, required: true },
   improvementpoints: { type: String, required: true },
   maintainpoints: { type: String, required: true },
   suggestions: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
 });
 
-FeedbackSchema.pre("save", function(next) {
+FeedbackSchema.pre("save", function (next) {
   let now = new Date();
   if (!this.createdAt) {
     this.createdAt = now;
@@ -29,4 +29,7 @@ FeedbackSchema.pre("save", function(next) {
   next();
 });
 
-export const FeedbackModel: Model<IFeedback> =  model<IFeedback>('Feedback', FeedbackSchema);
+export const FeedbackModel: Model<IFeedback> = model<IFeedback>(
+  "Feedback",
+  FeedbackSchema
+);

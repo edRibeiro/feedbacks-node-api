@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { mongoose } from "@typegoose/typegoose";
 import { FeedbackModel } from "./feedback.model";
 
 const createFeedback = async (req: Request, res: Response) => {
@@ -61,10 +60,12 @@ const updateFeedback = async (req: Request, res: Response) => {
 
 const getAllFeedbacks = async (req: Request, res: Response) => {
   try {
-    const updateFeedbacks = await FeedbackModel.find({
+    const feedbacks = await FeedbackModel.find({
       $or: [{ owner: req.user.id }, { user: req.user.id }],
-    });
-    return res.status(201).json({ data: updateFeedbacks });
+    })
+      .populate("owner")
+      .populate("user");
+    return res.status(201).json({ data: feedbacks });
   } catch (error) {
     return res.status(422).json({ error });
   }
@@ -73,14 +74,21 @@ const getAllFeedbacks = async (req: Request, res: Response) => {
 const getFeedback = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const feedback = await FeedbackModel.findById(id);
+    const feedback = await FeedbackModel.findOne({
+      $or: [{ owner: req.user.id }, { user: req.user.id }],
+      _id: id,
+    })
+      .populate("owner")
+      .populate("user");
     if (!feedback) {
       return res
         .status(404)
         .json({ message: `Feedback with id "${id}" not found.` });
     }
-    if (feedback.owner !== req.user.id || feedback.user !== req.user.id) {
-      res.status(401).json({ success: false, message: "Access denied." });
+    if (feedback.owner.id !== req.user.id && feedback.user.id !== req.user.id) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Access denied." });
     }
     return res.status(201).json({ data: feedback });
   } catch (error) {

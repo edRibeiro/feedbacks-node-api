@@ -8,10 +8,23 @@ const getProfile = async (req: Request, res: Response) => {
     if (!user) {
       throw new Error(`User not found.`);
     }
-    return res.status(201).json({ data: user });
+    return res.status(200).json({ data: user });
   } catch (error) {
     return res.status(404).json({ error });
   }
 };
 
-export { getProfile };
+const getUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await UserModel.find({}).select("name");
+
+    if (!users) {
+      throw new Error(`User not found.`);
+    }
+    return res.status(201).json({ data: users });
+  } catch (error) {
+    return res.status(404).json({ error });
+  }
+};
+
+export { getProfile, getUsers };
