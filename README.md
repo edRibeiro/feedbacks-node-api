@@ -24,7 +24,9 @@ cp .env.example .env
 
 ```
 npm install or yarn
-npm start or yarn start
+npm run seeder or yarn seeder
+Ctrl + c
+npm run start or yarn start
 ```
 
 Open your local browser and verify the feedbacks-node-api is working by accessing:  
