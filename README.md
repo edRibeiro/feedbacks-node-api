@@ -20,6 +20,8 @@ cd feedbacks-node-api
 cp .env.example .env
 ```
 
+\*By default the API will run on port 3001.
+
 ### 3) Install node packages and verify routes locally
 
 ```
